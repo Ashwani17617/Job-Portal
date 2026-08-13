@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ job.title }} - JobPortal
+{% endblock %}
+
+
+{% block content %}
+
+<section class="py-5">
+
+    <div class="container">
+
+        <div class="row justify-content-center">
+
+            <div class="col-lg-9">
+
+                <!-- JOB HEADER -->
+
+                <div class="card border-0 shadow-sm mb-4">
+
+                    <div class="card-body p-4">
+
+                        <span class="badge bg-primary mb-3">
+                            {{ job.get_job_type_display }}
+                        </span>
+
+                        <h1 class="fw-bold">
+                            {{ job.title }}
+                        </h1>
+
+                        <h5 class="text-muted">
+                            {{ job.company.name }}
+                        </h5>
+                        <p class="text-muted">
+                            {{ job.company.description }}
+                        </p>
+
+                        {% if job.company.location %}
+                            <p class="text-muted">
+                                📍 {{ job.company.location }}
+                            </p>
+                        {% endif %}
+
+                        {% if job.company.website %}
+                            <a
+                                href="{{ job.company.website }}"
+                                target="_blank"
+                                class="btn btn-sm btn-outline-secondary"
+                            >
+                                Company Website
+                            </a>
+                        {% endif %}
+
+                        <p class="text-muted mb-2">
+                            📍 {{ job.location }}
+                        </p>
+
+                        {% if job.salary_min and job.salary_max %}
+
+                            <h5 class="text-success mt-3">
+                                ₹{{ job.salary_min }} -
+                                ₹{{ job.salary_max }}
+                            </h5>
+
+                        {% else %}
+
+                            <p class="text-muted">
+                                Salary not disclosed
+                            </p>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- JOB DESCRIPTION -->
+
+                <div class="card border-0 shadow-sm mb-4">
+
+                    <div class="card-body p-4">
+
+                        <h3 class="fw-bold mb-3">
+                            About the Job
+                        </h3>
+
+                        <p>
+                            {{ job.description|linebreaks }}
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- REQUIREMENTS -->
+
+                <div class="card border-0 shadow-sm mb-4">
+
+                    <div class="card-body p-4">
+
+                        <h3 class="fw-bold mb-3">
+                            Requirements
+                        </h3>
+
+                        <p>
+                            {{ job.requirements|linebreaks }}
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SKILLS -->
+
+                <div class="card border-0 shadow-sm mb-4">
+
+                    <div class="card-body p-4">
+
+                        <h3 class="fw-bold mb-3">
+                            Skills
+                        </h3>
+
+                        <p>
+                            {{ job.skills }}
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- JOB INFORMATION -->
+
+                <div class="card border-0 shadow-sm mb-4">
+
+                    <div class="card-body p-4">
+
+                        <h3 class="fw-bold mb-3">
+                            Job Information
+                        </h3>
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+
+                                <strong>
+                                    Experience
+                                </strong>
+
+                                <p class="text-muted">
+                                    {{ job.experience_required|default:"Not specified" }}
+                                </p>
+
+                            </div>
+
+
+                            <div class="col-md-6 mb-3">
+
+                                <strong>
+                                    Application Deadline
+                                </strong>
+
+                                <p class="text-muted">
+                                    {{ job.deadline }}
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- APPLY -->
+
+                <div class="text-center">
+
+                    {% if user.is_authenticated %}
+
+                        {% if user.role == "CANDIDATE" %}
+
+                            <a href="{% url 'apply_job' job.id %}" class="btn btn-primary btn-lg px-5">
+                                Apply Now
+                            </a>
+
+                        {% elif user.role == "RECRUITER" %}
+
+                            <p class="text-muted">
+                                Recruiters cannot apply for jobs.
+                            </p>
+
+                        {% endif %}
+
+                    {% else %}
+
+                        <a href="{% url 'login' %}"
+                           class="btn btn-primary btn-lg px-5">
+                            Login to Apply
+                        </a>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

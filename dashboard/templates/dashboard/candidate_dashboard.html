@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Candidate Dashboard - JobPortal
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container ">
+
+    <h1 class="fw-bold">Candidate Dashboard</h1>
+
+    <p>
+        Welcome, {{ user.first_name|default:user.username }}!
+    </p>
+    
+    <div class="mt-3">
+        <a
+            href="{% url 'candidate_profile' %}"
+            class="btn btn-outline-primary"
+        >
+            My Profile
+        </a>
+        <a
+            href="{% url 'candidate_applications' %}"
+            class="btn btn-primary "
+        >
+            My Applications
+        </a>
+    </div>
+
+
+</div>
+
+{% endblock %}

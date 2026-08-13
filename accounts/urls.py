@@ -1,0 +1,13 @@
+from django.urls import path
+
+from accounts import views
+
+
+
+urlpatterns = [
+    path("signup/", views.signup, name="signup"),
+    path("login/", views.user_login, name="login"),
+    path("logout/", views.user_logout, name="logout"),
+    path("profile/",views.candidate_profile,name="candidate_profile"),
+    path("company-profile/",views.company_profile,name="company_profile"),
+]

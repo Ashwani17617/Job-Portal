@@ -1,0 +1,215 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Applicants - {{ job.title }}
+{% endblock %}
+
+
+{% block content %}
+
+<section class="py-5">
+
+    <div class="container">
+
+        <!-- HEADER -->
+
+        <div class="mb-4">
+
+            <a
+                href="{% url 'recruiter_jobs' %}"
+                class="text-decoration-none"
+            >
+                ← Back to My Jobs
+            </a>
+
+            <h2 class="fw-bold mt-3">
+                Applicants
+            </h2>
+
+            <p class="text-muted">
+                {{ job.title }}
+            </p>
+
+        </div>
+
+
+        {% if applications %}
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body p-0">
+
+                    <div class="table-responsive">
+
+                        <table class="table table-hover mb-0">
+
+                            <thead class="table-light">
+
+                                <tr>
+
+                                    <th>
+                                        Candidate
+                                    </th>
+
+                                    <th>
+                                        Email
+                                    </th>
+
+                                    <th>
+                                        Applied On
+                                    </th>
+
+                                    <th>
+                                        Status
+                                    </th>
+
+                                    <th>
+                                        Resume
+                                    </th>
+
+                                    <th>
+                                        Action
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                                {% for application in applications %}
+
+                                    <tr>
+
+                                        <td>
+
+                                            <strong>
+                                                {{ application.candidate.user.get_full_name|default:application.candidate.user.username }}
+                                            </strong>
+
+                                        </td>
+
+
+                                        <td>
+
+                                            {{ application.candidate.user.email }}
+
+                                        </td>
+
+
+                                        <td>
+
+                                            {{ application.applied_at|date:"d M Y" }}
+
+                                        </td>
+
+
+                                        <td>
+
+                                            {% if application.status == "APPLIED" %}
+
+                                                <span class="badge bg-primary">
+                                                    Applied
+                                                </span>
+
+                                            {% elif application.status == "SHORTLISTED" %}
+
+                                                <span class="badge bg-warning text-dark">
+                                                    Shortlisted
+                                                </span>
+
+                                            {% elif application.status == "SELECTED" %}
+
+                                                <span class="badge bg-success">
+                                                    Selected
+                                                </span>
+
+                                            {% elif application.status == "REJECTED" %}
+
+                                                <span class="badge bg-danger">
+                                                    Rejected
+                                                </span>
+
+                                            {% endif %}
+
+                                        </td>
+
+
+                                        <td>
+
+                                            {% if application.resume %}
+
+                                                <a
+                                                    href="{{ application.resume.url }}"
+                                                    target="_blank"
+                                                    class="btn btn-sm btn-outline-primary"
+                                                >
+                                                    View Resume
+                                                </a>
+
+                                            {% else %}
+
+                                                <span class="text-muted">
+                                                    No Resume
+                                                </span>
+
+                                            {% endif %}
+
+                                        </td>
+
+
+                                        <td>
+
+                                            <a
+                                                href="{% url 'update_application_status' application.id %}"
+                                                class="btn btn-sm btn-primary"
+                                            >
+                                                Update Status
+                                            </a>
+
+                                        </td>
+
+                                    </tr>
+
+                                {% endfor %}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        {% else %}
+
+            <div class="text-center py-5">
+
+                <div class="card border-0 shadow-sm">
+
+                    <div class="card-body p-5">
+
+                        <h4>
+                            No applications yet
+                        </h4>
+
+                        <p class="text-muted">
+                            Candidates haven't applied for this job yet.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+{% endblock %}
